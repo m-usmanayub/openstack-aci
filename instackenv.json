@@ -1,0 +1,32 @@
+{
+    "nodes":[
+        {
+            "mac": [
+                "6c:41:6a:a0:9d:a0"
+            ],
+            "name": "btpn-controller-1",
+            "pm_type":"pxe_ipmitool",
+            "pm_user":"admin",
+            "pm_password":"P@ssw0rd",
+            "pm_addr":"10.80.148.5",
+            "disk":"40",
+            "memory":"4096",
+            "arch":"x86_64",
+            "cpu":"1"
+        },
+        {
+            "mac": [
+                "00:78:88:a3:1c:9c"
+            ],
+            "name": "btpn-novacomputeiha-1",
+            "pm_type":"pxe_ipmitool",
+            "pm_user":"admin",
+            "pm_password":"P@ssw0rd",
+            "pm_addr":"10.80.148.3",
+            "disk":"40",
+            "memory":"6144",
+            "arch":"x86_64",
+            "cpu":"4"
+        }
+    ]
+}

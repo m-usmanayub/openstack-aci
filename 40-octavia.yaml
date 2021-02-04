@@ -1,0 +1,21 @@
+resource_registry:
+  OS::TripleO::Services::OctaviaApi: /home/stack/openstack-tripleo-heat-templates-rendered/docker/services/octavia-api.yaml
+  OS::TripleO::Services::OctaviaHousekeeping: /home/stack/openstack-tripleo-heat-templates-rendered/docker/services/octavia-housekeeping.yaml
+  OS::TripleO::Services::OctaviaHealthManager: /home/stack/openstack-tripleo-heat-templates-rendered/docker/services/octavia-health-manager.yaml
+  OS::TripleO::Services::OctaviaWorker: /home/stack/openstack-tripleo-heat-templates-rendered/docker/services/octavia-worker.yaml
+  OS::TripleO::Services::OctaviaDeploymentConfig: /home/stack/openstack-tripleo-heat-templates-rendered/docker/services/octavia/octavia-deployment-config.yaml
+
+parameter_defaults:
+    NeutronEnableForceMetadata: true
+
+    # This flag enables internal generation of certificates for communication
+    # with amphorae. Use OctaviaCaCert, OctaviaCaKey, OctaviaCaKeyPassphrase
+    # and OctaviaClient cert to configure secure production environments.
+    OctaviaGenerateCerts: true
+
+    # override management network defaults to avoid conflict
+    OctaviaControlSubnetCidr: '172.23.0.0/16'
+    OctaviaControlSubnetGateway: '172.23.0.1'
+    OctaviaControlSubnetPoolStart: '172.23.0.2'
+    OctaviaControlSubnetPoolEnd: '172.23.255.254'
+

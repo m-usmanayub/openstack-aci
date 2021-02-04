@@ -1,0 +1,196 @@
+#Setup IP Address
+
+#Create a user on the undercloud node called stack:
+[root@undercloud ~]# useradd stack
+
+#Configure SSH authentication for the stack user using the root user’s authorized_keys file as a template:
+[root@undercloud ~]# mkdir /home/stack/.ssh
+[root@undercloud ~]# cp /root/.ssh/authorized_keys /home/stack/.ssh/
+[root@undercloud ~]# chown -R stack:stack /home/stack/.ssh
+
+#Create a sudo rule allowing the stack user to run any command as root without requiring a password:
+[root@undercloud ~]# echo 'stack ALL=(root) NOPASSWD:ALL' | tee -a /etc/sudoers.d/stack
+
+#Set the correct permissions on the stack user’s sudo rule file:
+[root@undercloud ~]# chmod 0440 /etc/sudoers.d/stack
+
+#Log out from the undercloud node:
+[root@undercloud ~]# exit
+
+#From the workstation node, make sure that you can connect to the undercloud node as the stack user:
+[student@local ~]$ ssh stack@undercloud
+
+#Creating directories for templates and images
+[stack@director ~]$ mkdir ~/images
+[stack@director ~]$ mkdir ~/templates
+
+#Setup subscription license
+[stack@director ~]$ sudo subscription-manager register --username ekky.prabowo@packet-systems.com
+[stack@director ~]$ sudo subscription-manager attach --pool=Valid-Pool-Number-123456
+[stack@director ~]$ sudo subscription-manager repos --disable=*
+[stack@director ~]$ sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-rh-common-rpms --enable=rhel-ha-for-rhel-7-server-rpms --enable=rhel-7-server-openstack-13-rpms --enable=rhel-7-server-rhceph-3-tools-rpms
+[stack@director ~]$ sudo yum update -y
+[stack@director ~]$ sudo reboot
+
+#Installing the director packages
+[stack@director ~]$ sudo yum install -y screen python-tripleoclient
+
+#Configuring undercloud.conf
+example:
+[DEFAULT]
+undercloud_hostname = director.openstack.btpn.com 
+local_ip = 192.168.20.10/24
+undercloud_public_host = 192.168.20.11
+undercloud_admin_host = 192.168.20.12
+overcloud_domain_name = openstack.btpn.com
+generate_service_certificate = true
+certificate_generation_ca = local
+local_interface = eth0
+local_mtu = 1500
+inspection_extras = true
+inspection_enable_uefi = true
+enable_node_discovery = true
+discovery_default_driver = ipmi
+enable_tempest = true
+enable_ui = true
+ipxe_enabled = true
+clean_nodes = true
+enabled_drivers = pxe_ipmitool,pxe_drac,pxe_ilo
+enabled_hardware_types = ipmi,cisco-ucs-managed
+[auth]
+[ctlplane-subnet]
+cidr = 192.168.20.0/24
+dhcp_start = 192.168.20.100
+dhcp_end = 192.168.20.240
+inspection_iprange = 192.168.20.20,192.168.20.99
+gateway = 192.168.20.1
+
+#Installing the director
+[stack@director ~]$ screen
+[stack@director ~]$ openstack undercloud install
+
+#Obtaining images for overcloud nodes
+[stack@director ~]$ source ~/stackrc
+(undercloud) [stack@director ~]$ sudo yum install rhosp-director-images rhosp-director-images-ipa
+(undercloud) [stack@director ~]$ mkdir ~/images
+(undercloud) [stack@director ~]$ cd ~/images
+(undercloud) [stack@director images]$ for i in /usr/share/rhosp-director-images/overcloud-full-latest-13.0.tar /usr/share/rhosp-director-images/ironic-python-agent-latest-13.0.tar; do tar -xvf $i; done
+(undercloud) [stack@director images]$ openstack overcloud image upload --image-path /home/stack/images/
+(undercloud) [stack@director images]$ openstack image list
+(undercloud) [stack@director images]$ ls -l /httpboot
+
+#Setting a nameserver for the control plane
+[stack@director ~]$ source ~/stackrc
+(undercloud) [stack@director images]$ openstack subnet set --dns-nameserver [nameserver1-ip] --dns-nameserver [nameserver2-ip] ctlplane-subnet
+(undercloud) [stack@director images]$ openstack subnet show ctlplane-subnet
+
+#Container images for additional services
+#Using the undercloud as a local registry
+openstack overcloud container image prepare \
+     --namespace=registry.access.redhat.com/rhosp13 \
+     --push-destination=192.0.2.1:8787 \
+     --prefix=openstack --tag-from-label {version}-{release} \
+     -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/neutron-ovn-dvr-ha.yaml \
+	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/cinder-backup.yaml \
+	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/collectd.yaml \
+	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/fluentd.yaml \
+	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/manila.yaml  \
+	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/octavia.yaml \
+     --output-env-file /home/stack/templates/environments/overcloud_images.yaml \
+     --output-images-file /home/stack/local_registry_images.yaml
+
+(undercloud) $ sudo openstack overcloud container image upload \
+  --config-file  /home/stack/local_registry_images.yaml \
+  --verbose
+(undercloud) $  curl http://192.168.24.1:8787/v2/_catalog | jq .repositories[]
+
+#Preparation ACI Image 
+#Download 2 ACI file in https://software.cisco.com/download/home/285968390/type/286304714/release/5.0(2.20200831)
+openstack-ciscorpms-repo-13.0-861.tar.gz
+tripleo-ciscoaci-13.0-861.noarch.rpm
+
+(undercloud) [stack@director ~]$ mkdir /root/aci
+(undercloud) [stack@director ~]$ screen
+(undercloud) [stack@director ~]$ sudo yum --nogpgcheck localinstall tripleo-ciscoaci-13.0-861.noarch.rpm
+(undercloud) [stack@director ~]$ python /opt/ciscoaci-tripleo-heat-templates/tools/build_openstack_aci_containers.py -z openstack-ciscorpms-repo-13.0-861.tar.gz --output_file=/home/stack/templates/ciscoaci_containers.yaml --destregistry=10.80.179.1:8787/rhosp13 --tag=latest
+
+
+# Registering Nodes for the Overcloud
+# Create instackenv.json
+(undercloud) [stack@director ~]$ vi instackenv.json
+example: 
+{
+    "nodes":[
+        {
+            "mac": [
+                "6c:41:6a:a0:9d:a0"
+            ],
+            "name": "btpn-controller-0",
+            "pm_type":"pxe_ipmitool",
+            "pm_user":"admin",
+            "pm_password":"P@ssw0rd",
+            "pm_addr":"10.80.148.5",
+            "disk":"40",
+            "memory":"4096",
+            "arch":"x86_64",
+            "cpu":"1"
+        },
+        {
+            "mac": [
+                "00:78:88:a3:1c:9c"
+            ],
+            "name": "btpn-novacomputeiha-0",
+            "pm_type":"pxe_ipmitool",
+            "pm_user":"admin",
+            "pm_password":"P@ssw0rd",
+            "pm_addr":"10.80.148.3",
+            "disk":"40",
+            "memory":"6144",
+            "arch":"x86_64",
+            "cpu":"4"
+        }
+    ]
+}
+
+# After creating the template, run the following commands to verify the formatting and syntax:
+$ source ~/stackrc
+(undercloud) $ openstack overcloud node import --validate-only ~/instackenv.json
+(undercloud) $ screen
+(undercloud) $ openstack overcloud node import ~/instackenv.json
+(undercloud) $ openstack baremetal node list
+
+# Inspecting the Hardware of Nodes
+(undercloud) $ openstack overcloud node introspect --all-manageable --provide
+
+# Performing Network Introspection for Interface Information
+(undercloud) $ openstack baremetal node list
+(undercloud) $ openstack baremetal introspection interface list [NODE UUID]
+(undercloud) $ openstack baremetal introspection interface show [NODE UUID] [INTERFACE]
+
+# Generate architecture specific roles
+$ openstack overcloud roles generate \
+    --roles-path /usr/share/openstack-tripleo-heat-templates/roles -o ~/templates/aci_roles_data.yaml \
+    Controller ComputeInstanceHA 
+
+# Tagging Nodes into Profiles
+openstack baremetal node set --property capabilities='profile:control,boot_option:local' btpn-controller-0
+openstack baremetal node set --property capabilities='profile:control,boot_option:local' btpn-controller-1
+openstack baremetal node set --property capabilities='profile:control,boot_option:local' btpn-controller-2
+openstack baremetal node set --property capabilities='profile:compute-instance-ha,boot_option:local' btpn-novacomputeiha-0 
+openstack baremetal node set --property capabilities='profile:compute-instance-ha,boot_option:local' btpn-novacomputeiha-1
+
+(undercloud) $ openstack overcloud profiles list
+
+# Creating an Environment File that Defines Node Counts and Flavors
+# Flavors
+$ source ~/stackrc
+$ openstack flavor create --id auto --ram 6144 --disk 40 --vcpus 4 compute-instance-ha
+$ openstack flavor set --property "cpu_arch"="x86_64" --property "capabilities:boot_option"="local" --property "capabilities:profile"="compute-instance-ha" compute-instance-ha
+(undercloud) $ openstack overcloud profiles list
+
+# Rendering tripleo template
+$ cd /usr/share/openstack-tripleo-heat-templates
+$ ./tools/process-templates.py -o ~/openstack-tripleo-heat-templates-rendered
+
+# Generate the fencing.yaml environment file
+(undercloud) $ openstack overcloud generate fencing --output ~/templates/62-fencing.yaml instackenv.json

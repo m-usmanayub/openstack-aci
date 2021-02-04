@@ -1,0 +1,6 @@
+parameter_defaults: 
+  CinderEnableIscsiBackend: false
+  CinderEnableRbdBackend: false
+  CinderEnableNfsBackend: false
+  NovaEnableRbdBackend: false
+  GlanceBackend: cinder

@@ -1,0 +1,7 @@
+parameter_defaults:
+  ComputeExtraConfig:
+#      nova::compute::libvirt::libvirt_cpu_mode: 'none'
+      nova::cpu_allocation_ratio: 2.0
+#      nova::ram_allocation_ratio: 1.0
+#      nova::disk_allocation_ratio: 1.0
+#      nova::image_cache_manager_interval: 60

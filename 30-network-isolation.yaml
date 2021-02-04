@@ -1,0 +1,55 @@
+ # Enable the creation of Neutron networks for isolated Overcloud
+ # traffic and configure each role to assign ports (related
+ # to that role) on these networks.
+ # primary role is: Controller
+ resource_registry:
+   # networks as defined in network_data.yaml
+   OS::TripleO::Network::Storage: /home/stack/openstack-tripleo-heat-templates-rendered/network/storage.yaml
+   OS::TripleO::Network::StorageMgmt: /home/stack/openstack-tripleo-heat-templates-rendered/network/storage_mgmt.yaml
+   OS::TripleO::Network::InternalApi: /home/stack/openstack-tripleo-heat-templates-rendered/network/internal_api.yaml
+   OS::TripleO::Network::Tenant: /home/stack/openstack-tripleo-heat-templates-rendered/network/tenant.yaml
+   OS::TripleO::Network::External: /home/stack/openstack-tripleo-heat-templates-rendered/network/external.yaml
+   OS::TripleO::Network::Management: /home/stack/openstack-tripleo-heat-templates-rendered/network/management.yaml
+
+   # Port assignments for the VIPs
+   OS::TripleO::Network::Ports::StorageVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
+   OS::TripleO::Network::Ports::StorageMgmtVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage_mgmt.yaml
+   OS::TripleO::Network::Ports::InternalApiVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
+   OS::TripleO::Network::Ports::ExternalVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/external.yaml
+   OS::TripleO::Network::Ports::RedisVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/vip.yaml
+
+   # Port assignments by role, edit role definition to assign networks to roles.
+   # Port assignments for the Controller
+   OS::TripleO::Controller::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
+   OS::TripleO::Controller::Ports::StorageMgmtPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage_mgmt.yaml
+   OS::TripleO::Controller::Ports::InternalApiPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
+   OS::TripleO::Controller::Ports::TenantPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/tenant.yaml
+   OS::TripleO::Controller::Ports::ExternalPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/external.yaml
+   OS::TripleO::Controller::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+
+   # Port assignments for the ComputeInstanceHA
+   OS::TripleO::ComputeInstanceHA::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
+   OS::TripleO::ComputeInstanceHA::Ports::InternalApiPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
+   OS::TripleO::ComputeInstanceHA::Ports::TenantPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/tenant.yaml
+   OS::TripleO::ComputeInstanceHA::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+
+   # Port assignments for the Compute
+#   OS::TripleO::Compute::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
+#   OS::TripleO::Compute::Ports::InternalApiPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
+#   OS::TripleO::Compute::Ports::TenantPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/tenant.yaml
+#   OS::TripleO::Compute::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+
+   # Port assignments for the CephStorage
+ #  OS::TripleO::CephStorage::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
+ #  OS::TripleO::CephStorage::Ports::StorageMgmtPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage_mgmt.yaml
+ #  OS::TripleO::CephStorage::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+
+   # Port assignments for the BlockStorage
+ #  OS::TripleO::BlockStorage::Ports::StoragePort: ../network/ports/storage.yaml
+ #  OS::TripleO::BlockStorage::Ports::StorageMgmtPort: ../network/ports/storage_mgmt.yaml
+ #  OS::TripleO::BlockStorage::Ports::InternalApiPort: ../network/ports/internal_api.yaml
+
+   # Port assignments for the ObjectStorage
+ #  OS::TripleO::ObjectStorage::Ports::StoragePort: ../network/ports/storage.yaml
+ #  OS::TripleO::ObjectStorage::Ports::StorageMgmtPort: ../network/ports/storage_mgmt.yaml
+ #  OS::TripleO::ObjectStorage::Ports::InternalApiPort: ../network/ports/internal_api.yaml

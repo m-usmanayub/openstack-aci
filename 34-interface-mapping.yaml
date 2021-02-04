@@ -1,0 +1,69 @@
+resource_registry:
+  OS::TripleO::NodeUserData: /usr/share/openstack-tripleo-heat-templates/firstboot/os-net-config-mappings.yaml
+
+parameter_defaults:
+  NetConfigDataLookup:
+#NODE-CONTROLLER01
+    node1:
+      nic1: "6C:AB:05:1C:F9:92" #PXE
+      nic2: "6C:AB:05:1C:F9:93" #MGMT
+      nic3: "3C:FD:FE:60:8C:D0" #BOND1
+      nic4: "3C:FD:FE:60:8C:D1" #BOND1
+      nic5: "3C:FD:FE:60:8C:D2" #BOND2
+      nic6: "3C:FD:FE:60:8C:D3" #BOND2
+#NODE-CONTROLLER02
+    node2:
+      nic1: "6C:AB:05:1C:F7:62" #PXE
+      nic2: "6C:AB:05:1C:F7:63" #MGMT
+      nic3: "3C:FD:FE:60:45:48" #BOND1
+      nic4: "3C:FD:FE:60:45:49" #BOND1
+      nic5: "3C:FD:FE:60:45:4A" #BOND2
+      nic6: "3C:FD:FE:60:45:4B" #BOND2
+#NODE-CONTROLLER03
+    node3:
+      nic1: "6C:AB:05:1C:F9:F6" #PXE
+      nic2: "6C:AB:05:1C:F9:F7" #MGMT
+      nic3: "3C:FD:FE:60:45:58" #BOND1
+      nic4: "3C:FD:FE:60:45:59" #BOND1
+      nic5: "3C:FD:FE:60:45:5A" #BOND2
+      nic6: "3C:FD:FE:60:45:5B" #BOND2
+#NODE-COMPUTE01
+    node4:
+      nic1: "D4:78:9B:AD:73:46" #PXE
+      nic2: "D4:78:9B:AD:73:47" #MGMT
+      nic3: "3C:FD:FE:60:8F:60" #BOND1
+      nic4: "3C:FD:FE:60:8F:61" #BOND1
+      nic5: "3C:FD:FE:60:8F:62" #BOND2
+      nic6: "3C:FD:FE:60:8F:63" #BOND2
+#NODE-COMPUTE02
+    node5:
+      nic1: "6C:AB:05:1D:0A:22" #PXE
+      nic2: "6C:AB:05:1D:0A:23" #MGMT
+      nic3: "3C:FD:FE:60:8F:70" #BOND1
+      nic4: "3C:FD:FE:60:8F:71" #BOND1
+      nic5: "3C:FD:FE:60:8F:72" #BOND2
+      nic6: "3C:FD:FE:60:8F:73" #BOND2
+#NODE-CEPH01
+    node6:
+      nic1: "6C:AB:05:1D:64:FE" #PXE
+      nic2: "6C:AB:05:1D:64:FF" #MGMT
+      nic3: "3C:FD:FE:60:95:F0" #BOND1
+      nic4: "3C:FD:FE:60:95:F1" #BOND1
+      nic5: "3C:FD:FE:60:95:F2" #BOND2
+      nic6: "3C:FD:FE:60:95:F3" #BOND2
+#NODE-CEPH02
+    node7:
+      nic1: "D4:E8:80:A4:01:B2" #PXE
+      nic2: "D4:E8:80:A4:01:B3" #MGMT
+      nic3: "3C:FD:FE:60:95:58" #BOND1
+      nic4: "3C:FD:FE:60:95:59" #BOND1
+      nic5: "3C:FD:FE:60:95:5A" #BOND2
+      nic6: "3C:FD:FE:60:95:5B" #BOND2
+#NODE-CEPH03
+    node8:
+      nic1: "D4:78:9B:00:7F:D6" #PXE
+      nic2: "D4:78:9B:00:7F:D7" #MGMT
+      nic3: "3C:FD:FE:72:B0:D0" #BOND1
+      nic4: "3C:FD:FE:72:B0:D1" #BOND1
+      nic5: "3C:FD:FE:72:B0:D2" #BOND2
+      nic6: "3C:FD:FE:72:B0:D3" #BOND2
