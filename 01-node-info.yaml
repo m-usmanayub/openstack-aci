@@ -2,4 +2,4 @@ parameter_defaults:
   OvercloudControllerFlavor: control
   OvercloudComputeInstanceHAFlavor: compute-instance-ha
   ControllerCount: 3
-  ComputeInstanceHACount: 4
+  ComputeInstanceHACount: 5
