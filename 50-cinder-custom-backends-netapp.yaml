@@ -1,32 +1,6 @@
 parameter_defaults:
   ControllerExtraConfig:
     cinder::config::cinder_config:
-        NET1_SAS/volume_driver:
-            value: cinder.volume.drivers.netapp.common.NetAppDriver
-        NET1_SAS/netapp_storage_family:
-            value: ontap_cluster
-        NET1_SAS/netapp_storage_protocol:
-            value: fc
-        NET1_SAS/netapp_server_hostname:
-            value: gtsopenstack.openstack.clouda.id
-        NET1_SAS/netapp_server_port:
-            value: 443
-        NET1_SAS/netapp_login:
-            value: vsadmin
-        NET1_SAS/netapp_password:
-            value: P@ssw0rd714
-        NET1_SAS/volume_backend_name:
-            value: NET1_SAS
-        NET1_SAS/netapp_pool_name_search_pattern:
-            value: gts_volume_sas.+
-        NET1_SAS/netapp_vserver:
-            value: GTSOPENSTACK
-        NET1_SAS/netapp_size_multiplier:
-            value: 1.2
-        NET1_SAS/netapp_transport_type:
-            value: https
-        NET1_SAS/use_multipath_for_image_xfer:
-            value: true
         NET1_SATA/volume_driver: 
             value: cinder.volume.drivers.netapp.common.NetAppDriver 
         NET1_SATA/netapp_storage_family:
@@ -53,4 +27,4 @@ parameter_defaults:
             value: https
         NET1_SATA/use_multipath_for_image_xfer:
             value: true
-    cinder_user_enabled_backends: ['NET1_SAS','NET1_SATA']
+    cinder_user_enabled_backends: ['NET1_SATA']

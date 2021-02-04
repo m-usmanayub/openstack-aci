@@ -30,7 +30,8 @@ parameter_defaults:
   ExternalNetworkVlanID: 631
   # ManagementNetworkVlanID: 637
   # List of Neutron network types for tenant networks (will be used in order)
-  NeutronNetworkType: 'vxlan,vlan'
+  NeutronNetworkType: 'vxlan,vlan,flat'
+  NeutronFlatNetworks: "*"
   # The tunnel type for the tenant network (vxlan or gre). Set to '' to disable tunneling.
   NeutronTunnelTypes: 'vxlan'
   # Neutron VLAN ranges per network, for example 'datacentre:1:499,tenant:500:1000':
