@@ -9,7 +9,7 @@
    OS::TripleO::Network::InternalApi: /home/stack/openstack-tripleo-heat-templates-rendered/network/internal_api.yaml
    OS::TripleO::Network::Tenant: /home/stack/openstack-tripleo-heat-templates-rendered/network/tenant.yaml
    OS::TripleO::Network::External: /home/stack/openstack-tripleo-heat-templates-rendered/network/external.yaml
-   OS::TripleO::Network::Management: /home/stack/openstack-tripleo-heat-templates-rendered/network/management.yaml
+   #OS::TripleO::Network::Management: /home/stack/openstack-tripleo-heat-templates-rendered/network/management.yaml
 
    # Port assignments for the VIPs
    OS::TripleO::Network::Ports::StorageVipPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
@@ -25,13 +25,13 @@
    OS::TripleO::Controller::Ports::InternalApiPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
    OS::TripleO::Controller::Ports::TenantPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/tenant.yaml
    OS::TripleO::Controller::Ports::ExternalPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/external.yaml
-   OS::TripleO::Controller::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+  #OS::TripleO::Controller::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
 
    # Port assignments for the ComputeInstanceHA
    OS::TripleO::ComputeInstanceHA::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml
    OS::TripleO::ComputeInstanceHA::Ports::InternalApiPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/internal_api.yaml
    OS::TripleO::ComputeInstanceHA::Ports::TenantPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/tenant.yaml
-   OS::TripleO::ComputeInstanceHA::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
+   #OS::TripleO::ComputeInstanceHA::Ports::ManagementPort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/management.yaml
 
    # Port assignments for the Compute
 #   OS::TripleO::Compute::Ports::StoragePort: /home/stack/openstack-tripleo-heat-templates-rendered/network/ports/storage.yaml

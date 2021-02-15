@@ -1,0 +1,2 @@
+resource_registry:
+  OS::TripleO::NodeExtraConfig: /home/stack/templates/80-rhel-registration.yaml

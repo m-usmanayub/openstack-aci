@@ -19,9 +19,9 @@ parameter_defaults:
   TenantNetCidr: 10.63.4.0/24
   TenantAllocationPools: [{"start": "10.63.4.15", "end": "10.63.4.249"}]
   DnsServers: ['10.61.4.10','10.61.4.11']
-  ManagementNetCidr: 10.63.7.0/24
-  ManagementAllocationPools: [{'start': '10.63.7.15', 'end': '10.63.7.249'}]
-  ManagementInterfaceDefaultRoute: 10.63.7.1
+  #ManagementNetCidr: 10.63.7.0/24
+  #ManagementAllocationPools: [{'start': '10.63.7.15', 'end': '10.63.7.249'}]
+  #ManagementInterfaceDefaultRoute: 10.63.7.1
   # Customize the VLAN IDs to match the local environment
   InternalApiNetworkVlanID: 633
   StorageNetworkVlanID: 635
