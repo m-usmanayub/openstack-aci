@@ -1,0 +1,43 @@
+# A Heat environment file which can be used to enable a
+# a Neutron Cisco Aci backend on the controller, configured via puppet
+resource_registry:
+
+  #controller
+  OS::TripleO::ControllerExtraConfigPre: /opt/ciscoaci-tripleo-heat-templates/nodepre.yaml
+  OS::TripleO::Services::CiscoAciAIM: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_aciaim.yaml
+  OS::TripleO::Services::NeutronL3Agent: OS::Heat::None
+  OS::TripleO::Services::NeutronOvsAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_opflex.yaml
+  OS::TripleO::Docker::NeutronMl2PluginBase: /opt/ciscoaci-tripleo-heat-templates/puppet/services/ciscoaci-ml2.yaml
+
+  #ComputeInstanceHA
+  OS::TripleO::ComputeInstanceHAExtraConfigPre: /opt/ciscoaci-tripleo-heat-templates//nodepre.yaml
+  OS::TripleO::Services::ComputeInstanceHANeutronOvsAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_opflex.yaml
+  OS::TripleO::Services::ComputeInstanceHANeutronCorePlugin: /opt/ciscoaci-tripleo-heat-templates/puppet/services/ciscoaci_compute.yaml
+  OS::TripleO::Services::ComputeInstanceHANeutronMetadataAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/compute-neutron-metadata.yaml
+  OS::TripleO::Services::CiscoAciLldp: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_lldp.yaml
+
+
+parameter_defaults:
+  NeutronSfcDriver: 'aim'
+  NeutronFcDriver: 'aim'
+  AdminPassword: 'P@ssw0rd'
+  NeutronCorePlugin: 'ml2plus'
+  NeutronServicePlugins: 'group_policy,ncp,apic_aim_l3,flow_classifier,sfc,trunk'
+  NeutronPluginMl2PuppetTags: 'neutron_plugin_ml2,neutron_plugin_cisco_aci'
+  NeutronEnableIsolatedMetadata: true
+  EnablePackageInstall: true
+  ACIScopeNames: true
+  ACIYumRepo: http://192.168.20.10/acirepo
+  ACIApicHosts: 10.68.125.111
+  ACIApicUsername: admin
+  ACIApicPassword: Cisco.123
+  ACIApicSystemId: osp13
+  ACIMechanismDrivers: 'apic_aim'
+  ACIUseLLDPDiscovery: 'true'
+  ACIApicEntityProfile: BTPN_AEP
+  ACIApicInfraVlan: 4000
+#  ACIApicInfraSubnetGateway: 10.0.0.30
+#  ACIApicInfraAnycastAddr: 10.0.0.32
+#  ACIOpflexUplinkInterface: ens9
+  ACIOpflexEncapMode: vxlan
+  DockerInsecureRegistryAddress: 192.168.20.10:8787
