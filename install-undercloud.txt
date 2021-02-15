@@ -173,8 +173,8 @@ $ openstack overcloud roles generate \
 
 # Tagging Nodes into Profiles
 openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-0' btpn-controller-0
-openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-0' btpn-controller-1
-openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-0' btpn-controller-2
+openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-1' btpn-controller-1
+openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-2' btpn-controller-2
 openstack baremetal node set --property capabilities='profile:compute-instance-ha,boot_option:local' --property capabilities='node:computeinstanceha-0' btpn-novacomputeiha-0 
 openstack baremetal node set --property capabilities='profile:compute-instance-ha,boot_option:local' --property capabilities='node:computeinstanceha-1' btpn-novacomputeiha-1
 
