@@ -30,6 +30,7 @@ time openstack overcloud deploy --templates \
 -e ~/templates/64-compute-instanceha-extraconfig.yaml \
 -e ~/templates/66-compute-instanceha.yaml \
 -e ~/templates/68-low-memory-usage.yaml \
+-e ~/templates/69-scheduler-hints.yaml \
 -e ~/templates/70-aci_cs.yaml \
 -e /home/stack/templates/82-rhel-registration-resource-registry.yaml \
 -e /home/stack/templates/84-environment-rhel-registration.yaml \
