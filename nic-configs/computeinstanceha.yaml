@@ -111,20 +111,6 @@ resources:
                   next_hop:
                     get_param: ControlPlaneDefaultRoute
 
-              - type: interface
-                name: nic2
-                #vlan_id:
-                #  get_param: ManagementNetworkVlanID
-                mtu: 9000
-                use_dhcp: false
-                addresses:
-                - ip_netmask:
-                    get_param: ManagementIpSubnet
-                routes:
-                - default: true
-                  next_hop:
-                    get_param: ManagementInterfaceDefaultRoute
-
               - type: ovs_bridge
                 name: br-trunk
                 members:
