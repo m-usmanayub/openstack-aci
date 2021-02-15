@@ -1,5 +1,5 @@
 parameter_defaults:
   ControllerSchedulerHints:
     'capabilities:node': 'controller-%index%'
-  ComputeSchedulerHints:
+  ComputeInstanceHASchedulerHints:
     'capabilities:node': 'computeinstanceha-%index%'
