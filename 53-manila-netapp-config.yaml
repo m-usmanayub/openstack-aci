@@ -1,7 +1,7 @@
 parameter_defaults:
-   ManilaNetappLogin: 'netapp_user'
-   ManilaNetappPassword: 'netapp_user_password'
-   ManilaNetappServerHostname: '10.8.18.108'
-   ManilaNetappVserver: 'vserver_1'
+   ManilaNetappLogin: 'vsadmin'
+   ManilaNetappPassword: 'P@ssw0rd'
+   ManilaNetappServerHostname: '10.1.118.120'
+   ManilaNetappVserver: 'vsadmin'
    ManilaNetappTraceFlags: 'method,api'
    ManilaNetappDriverHandlesShareServers: 'false'

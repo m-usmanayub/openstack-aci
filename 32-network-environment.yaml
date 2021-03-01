@@ -5,29 +5,26 @@ resource_registry:
 parameter_defaults:
   NeutronEnableDVR: false
   ControlPlaneSubnetCidr: '24'
-  ControlPlaneDefaultRoute: 10.63.2.1
-  EC2MetadataIp: 10.63.2.5
-  ExternalNetCidr: 10.63.1.0/24
-  ExternalAllocationPools: [{"start": "10.63.1.15", "end": "10.63.1.249"}]
-  ExternalInterfaceDefaultRoute: 10.63.1.1
-  InternalApiNetCidr: 10.63.3.0/24
-  InternalApiAllocationPools: [{"start": "10.63.3.15", "end": "10.63.3.249"}]
-  StorageNetCidr: 10.63.5.0/24
-  StorageAllocationPools: [{"start": "10.63.5.15", "end": "10.63.5.249"}]
-  StorageMgmtNetCidr: 10.63.6.0/24
-  StorageMgmtAllocationPools: [{"start": "10.63.6.15", "end": "10.63.6.249"}]
-  TenantNetCidr: 10.63.4.0/24
-  TenantAllocationPools: [{"start": "10.63.4.15", "end": "10.63.4.249"}]
-  DnsServers: ['10.61.4.10','10.61.4.11']
-  #ManagementNetCidr: 10.63.7.0/24
-  #ManagementAllocationPools: [{'start': '10.63.7.15', 'end': '10.63.7.249'}]
-  #ManagementInterfaceDefaultRoute: 10.63.7.1
+  ControlPlaneDefaultRoute: 10.1.122.1
+  EC2MetadataIp: 10.1.122.1
+  ExternalNetCidr: 10.1.117.0/24
+  ExternalAllocationPools: [{"start": "10.1.117.24", "end": "10.1.117.48"}]
+  ExternalInterfaceDefaultRoute: 10.1.117.1
+  InternalApiNetCidr: 10.1.123.0/24
+  InternalApiAllocationPools: [{"start": "10.1.123.15", "end": "10.1.123.249"}]
+  StorageNetCidr: 10.1.118.0/24
+  StorageAllocationPools: [{"start": "10.1.118.200", "end": "10.1.118.210"}]
+  StorageMgmtNetCidr: 10.1.119.0/24
+  StorageMgmtAllocationPools: [{"start": "10.1.119.15", "end": "10.1.119.249"}]
+  TenantNetCidr: 10.1.124.0/24
+  TenantAllocationPools: [{"start": "10.1.124.15", "end": "10.1.124.249"}]
+  DnsServers: ['10.1.117.161','10.1.117.100']
   # Customize the VLAN IDs to match the local environment
-  InternalApiNetworkVlanID: 633
-  StorageNetworkVlanID: 635
-  StorageMgmtNetworkVlanID: 636
-  TenantNetworkVlanID: 634
-  ExternalNetworkVlanID: 631
+  InternalApiNetworkVlanID: 710
+  StorageNetworkVlanID: 730
+  StorageMgmtNetworkVlanID: 740
+  TenantNetworkVlanID: 750
+  ExternalNetworkVlanID: 720
   # ManagementNetworkVlanID: 637
   # List of Neutron network types for tenant networks (will be used in order)
   NeutronNetworkType: 'vxlan,vlan,flat'
@@ -35,12 +32,12 @@ parameter_defaults:
   # The tunnel type for the tenant network (vxlan or gre). Set to '' to disable tunneling.
   NeutronTunnelTypes: 'vxlan'
   # Neutron VLAN ranges per network, for example 'datacentre:1:499,tenant:500:1000':
-  NeutronNetworkVLANRanges: 'physnet1:638:640'
+  NeutronNetworkVLANRanges: 'physnet1:720:770'
   # Customize bonding options, e.g. "mode=4 lacp_rate=1 updelay=1000 miimon=100"
   # for Linux bonds w/LACP, or "bond_mode=active-backup" for OVS active/backup.
   # BondInterfaceOvsOptions: "bond_mode=balance-slb"
   NeutronExternalNetworkBridge: "''"
   NeutronBridgeMappings: "physnet1:br-ex"
   NeutronServicePlugins: router,qos,segments,trunk,metering
-  NeutronDhcpAgentDnsmasqDnsServers: ["10.61.4.10"]
+  NeutronDhcpAgentDnsmasqDnsServers: ["10.1.117.161"]
 

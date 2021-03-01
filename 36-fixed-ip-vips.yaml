@@ -14,8 +14,8 @@ parameter_defaults:
   # NOTE: we will eventually move to one VIP per service
   #
 #  ControlFixedIPs: [{'ip_address':'10.63.2.250'}]
-  PublicVirtualFixedIPs: [{'ip_address':'10.63.1.250'}]
+  PublicVirtualFixedIPs: [{'ip_address':'10.1.117.211'}]
 #  InternalApiVirtualFixedIPs: [{'ip_address':'10.63.3.50'}]
-#  StorageVirtualFixedIPs: [{'ip_address':'10.63.5.50'}]
+  StorageVirtualFixedIPs: [{'ip_address':'10.1.118.211'}]
 #  StorageMgmtVirtualFixedIPs: [{'ip_address':'10.63.6.50'}]
 #  RedisVirtualFixedIPs: [{'ip_address':'10.63.3.51'}]

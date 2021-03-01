@@ -11,9 +11,9 @@ resource_registry:
 
   #ComputeInstanceHA
   OS::TripleO::ComputeInstanceHAExtraConfigPre: /opt/ciscoaci-tripleo-heat-templates//nodepre.yaml
-  OS::TripleO::Services::ComputeInstanceHANeutronOvsAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_opflex.yaml
-  OS::TripleO::Services::ComputeInstanceHANeutronCorePlugin: /opt/ciscoaci-tripleo-heat-templates/puppet/services/ciscoaci_compute.yaml
-  OS::TripleO::Services::ComputeInstanceHANeutronMetadataAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/compute-neutron-metadata.yaml
+  OS::TripleO::Services::ComputeNeutronOvsAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_opflex.yaml
+  OS::TripleO::Services::ComputeNeutronCorePlugin: /opt/ciscoaci-tripleo-heat-templates/puppet/services/ciscoaci_compute.yaml
+  OS::TripleO::Services::ComputeNeutronMetadataAgent: /opt/ciscoaci-tripleo-heat-templates/docker/services/compute-neutron-metadata.yaml
   OS::TripleO::Services::CiscoAciLldp: /opt/ciscoaci-tripleo-heat-templates/docker/services/cisco_lldp.yaml
 
 
@@ -27,17 +27,17 @@ parameter_defaults:
   NeutronEnableIsolatedMetadata: true
   EnablePackageInstall: true
   ACIScopeNames: true
-  ACIYumRepo: http://192.168.20.10/acirepo
-  ACIApicHosts: 10.68.125.111
-  ACIApicUsername: admin
-  ACIApicPassword: Cisco.123
+  ACIYumRepo: http://10.1.122.1/acirepo
+  ACIApicHosts: 172.31.10.23
+  ACIApicUsername: btpnadmin
+  ACIApicPassword: P@ssw0rd123
   ACIApicSystemId: osp13
   ACIMechanismDrivers: 'apic_aim'
   ACIUseLLDPDiscovery: 'true'
-  ACIApicEntityProfile: BTPN_AEP
-  ACIApicInfraVlan: 4000
+  ACIApicEntityProfile: PSI_POC_All
+  ACIApicInfraVlan: 3967
 #  ACIApicInfraSubnetGateway: 10.0.0.30
 #  ACIApicInfraAnycastAddr: 10.0.0.32
 #  ACIOpflexUplinkInterface: ens9
   ACIOpflexEncapMode: vxlan
-  DockerInsecureRegistryAddress: 192.168.20.10:8787
+  DockerInsecureRegistryAddress: 10.1.122.1:8787

@@ -6,25 +6,23 @@ parameter_defaults:
         NET1_SATA/netapp_storage_family:
             value: ontap_cluster
         NET1_SATA/netapp_storage_protocol:
-            value: fc
+            value: iscsi
         NET1_SATA/netapp_server_hostname:
-            value: gtsopenstack.openstack.clouda.id
+            value: 10.1.118.102
         NET1_SATA/netapp_server_port:
-            value: 443
+            value: 80
         NET1_SATA/netapp_login:
             value: vsadmin
         NET1_SATA/netapp_password:
-            value: P@ssw0rd714
+            value: P@ssw0rd
         NET1_SATA/volume_backend_name:
             value: NET1_SATA
-        NET1_SATA/netapp_pool_name_search_pattern:
-            value: gts_volume_sata.+
         NET1_SATA/netapp_vserver:
-            value: GTSOPENSTACK
+            value: vsadmin
         NET1_SATA/netapp_size_multiplier:
             value: 1.2
         NET1_SATA/netapp_transport_type:
-            value: https
+            value: http
         NET1_SATA/use_multipath_for_image_xfer:
             value: true
     cinder_user_enabled_backends: ['NET1_SATA']

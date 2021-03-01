@@ -26,14 +26,6 @@ parameters:
     default: ''
     description: IP address/subnet on the external network
     type: string
-  ManagementIpSubnet:
-    default: ''
-    description: IP address/subnet on the management network
-    type: string
-  ManagementInterfaceDefaultRoute: # Only populated when including environments/network-management.yaml
-    default: '10.63.7.1'
-    description: default route for the management network
-    type: string
   BondInterfaceOvsOptions:
     default: bond_mode=balance-slb
     description: 'The ovs_options or bonding_options string for the bond
@@ -41,34 +33,34 @@ parameters:
       for OVS bonds or like mode=4 for Linux bonds using this option.'
     type: string
   StorageNetworkVlanID:
-    default: 635
+    default: 730
     description: Vlan ID for the storage network traffic.
     type: number
   StorageMgmtNetworkVlanID:
-    default: 636
+    default: 740
     description: Vlan ID for the storage_mgmt network traffic.
     type: number
   InternalApiNetworkVlanID:
-    default: 633
+    default: 710
     description: Vlan ID for the internal_api network traffic.
     type: number
   TenantNetworkVlanID:
-    default: 634
+    default: 750
     description: Vlan ID for the tenant network traffic.
     type: number
   ExternalNetworkVlanID:
-    default: 631
+    default: 720
     description: Vlan ID for the external network traffic.
     type: number
   ManagementNetworkVlanID:
-    default: 637
+    default: 720
     description: Vlan ID for the management network traffic.
     type: number
   ControlPlaneDefaultRoute: # Override this via parameter_defaults
     description: The default route of the control plane network.
     type: string
   ExternalInterfaceDefaultRoute:
-    default: '10.63.1.1'
+    default: '10.1.117.1'
     description: default route for the external network
     type: string
   ControlPlaneSubnetCidr: # Override this via parameter_defaults
@@ -116,19 +108,19 @@ resources:
                 members:
                 - type: linux_bond
                   name: bond0
-                  mtu: 9000
+                  mtu: 1500
                   bonding_options: 'mode=4 miimon=100'
                   members:
                   - type: interface
-                    name: nic3
-                    mtu: 9000
+                    name: nic2
+                    mtu: 1500
                     primary: true
                   - type: interface
-                    mtu: 9000
-                    name: nic4
+                    mtu: 1500
+                    name: nic3
                 - type: vlan
                   device: bond0
-                  mtu: 9000
+                  mtu: 1500
                   vlan_id:
                     get_param: InternalApiNetworkVlanID
                   addresses:
@@ -136,43 +128,28 @@ resources:
                       get_param: InternalApiIpSubnet
                 - type: vlan
                   device: bond0
-                  mtu: 9000
+                  mtu: 1500
                   vlan_id:
                     get_param: TenantNetworkVlanID
                   addresses:
                   - ip_netmask:
                       get_param: TenantIpSubnet
-
-              - type: ovs_bridge
-                name: br-ex
-                members:
-                - type: linux_bond
-                  name: bond1
-                  mtu: 9000
-                  bonding_options: 'mode=4 miimon=100'
-                  members:
-                  - type: interface
-                    name: nic5
-                    mtu: 9000
-                    primary: true
-                  - type: interface
-                    mtu: 9000
-                    name: nic6
                 - type: vlan
                   device: bond1
-                  mtu: 9000
+                  mtu: 1500
                   vlan_id:
                     get_param: StorageNetworkVlanID
                   addresses:
                   - ip_netmask:
                       get_param: StorageIpSubnet
+
                 #- type: vlan
                 #  device: bond1
-                #  mtu: 9000
+                #  mtu: 1500
                 #  vlan_id: 638
                 #- type: vlan
                 #  device: bond1
-                #  mtu: 9000
+                #  mtu: 1500
                 #  vlan_id: 640
 
 outputs:

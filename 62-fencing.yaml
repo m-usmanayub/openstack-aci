@@ -3,58 +3,16 @@ parameter_defaults:
   FencingConfig:
     devices:
     - agent: fence_ipmilan
-      host_mac: 6c:ab:05:1c:f9:92
+      host_mac: a8:b4:56:ec:b8:ee
       params:
-        ipaddr: 10.1.2.57
+        ipaddr: 10.1.115.21
         lanplus: true
         login: admin
         passwd: P@ssw0rd
     - agent: fence_ipmilan
-      host_mac: 6c:ab:05:1c:f7:62
+      host_mac: 7c:d3:0a:6e:0d:78
       params:
-        ipaddr: 10.1.2.58
+        ipaddr: 10.1.115.25
         lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: 6c:ab:05:1c:f9:f6
-      params:
-        ipaddr: 10.1.2.59
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: d4:78:9b:ad:73:46
-      params:
-        ipaddr: 10.1.2.60
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: 6c:ab:05:1d:0a:22
-      params:
-        ipaddr: 10.1.2.61
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: 6c:ab:05:1d:64:fe
-      params:
-        ipaddr: 10.1.2.62
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: d4:e8:80:a4:01:b2
-      params:
-        ipaddr: 10.1.2.63
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
-    - agent: fence_ipmilan
-      host_mac: d4:78:9b:00:7f:d6
-      params:
-        ipaddr: 10.1.2.64
-        lanplus: true
-        login: admin
-        passwd: P@ssw0rd
+        login: USERID
+        passwd: PASSW0RD
