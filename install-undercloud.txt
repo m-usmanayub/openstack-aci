@@ -38,14 +38,14 @@
 #Configuring undercloud.conf
 example:
 [DEFAULT]
-undercloud_hostname = director.openstack.btpn.com 
-local_ip = 192.168.20.10/24
-undercloud_public_host = 192.168.20.11
-undercloud_admin_host = 192.168.20.12
-overcloud_domain_name = openstack.btpn.com
+undercloud_hostname = director.openstack.bankbtpn.co.id 
+local_ip = 10.1.122.1/24
+undercloud_public_host = 10.1.122.2
+undercloud_admin_host = 10.1.122.3
+overcloud_domain_name = openstack.bankbtpn.co.id
 generate_service_certificate = true
 certificate_generation_ca = local
-local_interface = eth0
+local_interface = eth1
 local_mtu = 1500
 inspection_extras = true
 inspection_enable_uefi = true
@@ -59,11 +59,12 @@ enabled_drivers = pxe_ipmitool,pxe_drac,pxe_ilo
 enabled_hardware_types = ipmi,cisco-ucs-managed
 [auth]
 [ctlplane-subnet]
-cidr = 192.168.20.0/24
-dhcp_start = 192.168.20.100
-dhcp_end = 192.168.20.240
-inspection_iprange = 192.168.20.20,192.168.20.99
-gateway = 192.168.20.1
+cidr = 10.1.122.0/24
+dhcp_start = 10.1.122.100
+dhcp_end = 10.1.122.240
+inspection_iprange = 10.1.122.20,192.168.20.99
+gateway = 10.1.122.1
+
 
 #Installing the director
 [stack@director ~]$ screen
@@ -88,14 +89,14 @@ gateway = 192.168.20.1
 #Using the undercloud as a local registry
 openstack overcloud container image prepare \
      --namespace=registry.access.redhat.com/rhosp13 \
-     --push-destination=192.0.2.1:8787 \
+     --push-destination=10.1.122.1:8787 \
      --prefix=openstack --tag-from-label {version}-{release} \
 	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/cinder-backup.yaml \
 	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/collectd.yaml \
 	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/fluentd.yaml \
 	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/manila.yaml  \
 	 -e /usr/share/openstack-tripleo-heat-templates/environments/services-docker/octavia.yaml \
-     --output-env-file /home/stack/templates/environments/overcloud_images.yaml \
+     --output-env-file /home/stack/templates/overcloud_images.yaml \
      --output-images-file /home/stack/local_registry_images.yaml
 
 (undercloud) $ sudo openstack overcloud container image upload \
@@ -111,7 +112,7 @@ tripleo-ciscoaci-13.0-861.noarch.rpm
 (undercloud) [stack@director ~]$ mkdir /root/aci
 (undercloud) [stack@director ~]$ screen
 (undercloud) [stack@director ~]$ sudo yum --nogpgcheck localinstall tripleo-ciscoaci-13.0-861.noarch.rpm
-(undercloud) [stack@director ~]$ python /opt/ciscoaci-tripleo-heat-templates/tools/build_openstack_aci_containers.py -z openstack-ciscorpms-repo-13.0-861.tar.gz --output_file=/home/stack/templates/ciscoaci_containers.yaml --destregistry=10.80.179.1:8787/rhosp13 --tag=latest
+(undercloud) [stack@director ~]$ python /opt/ciscoaci-tripleo-heat-templates/tools/build_openstack_aci_containers.py -z openstack-ciscorpms-repo-13.0-861.tar.gz --output_file=/home/stack/templates/ciscoaci_containers.yaml --destregistry=10.1.122.1:8787/rhosp13 --tag=latest
 
 
 # Registering Nodes for the Overcloud
@@ -122,13 +123,13 @@ example:
     "nodes":[
         {
             "mac": [
-                "6c:41:6a:a0:9d:a0"
+                "a8:b4:56:62:c5:8a"
             ],
             "name": "btpn-controller-0",
             "pm_type":"pxe_ipmitool",
             "pm_user":"admin",
             "pm_password":"P@ssw0rd",
-            "pm_addr":"10.80.148.5",
+            "pm_addr":"10.1.115.19",
             "disk":"40",
             "memory":"4096",
             "arch":"x86_64",
@@ -136,13 +137,27 @@ example:
         },
         {
             "mac": [
-                "00:78:88:a3:1c:9c"
+                "a8:b4:56:ec:b8:ee"
             ],
             "name": "btpn-novacomputeiha-0",
             "pm_type":"pxe_ipmitool",
             "pm_user":"admin",
             "pm_password":"P@ssw0rd",
-            "pm_addr":"10.80.148.3",
+            "pm_addr":"10.1.115.21",
+            "disk":"40",
+            "memory":"6144",
+            "arch":"x86_64",
+            "cpu":"4"
+        },
+        {
+            "mac": [
+                "7c:d3:0a:6e:0d:78"
+            ],
+            "name": "btpn-novacomputeiha-1",
+            "pm_type":"pxe_ipmitool",
+            "pm_user":"USERID",
+            "pm_password":"PASSW0RD",
+            "pm_addr":"10.1.115.25",
             "disk":"40",
             "memory":"6144",
             "arch":"x86_64",
@@ -169,7 +184,11 @@ $ source ~/stackrc
 # Generate architecture specific roles
 $ openstack overcloud roles generate \
     --roles-path /usr/share/openstack-tripleo-heat-templates/roles -o ~/templates/aci_roles_data.yaml \
-    Controller ComputeInstanceHA 
+    Controller ComputeInstanceHA
+
+openstack overcloud roles generate \
+    --roles-path /usr/share/openstack-tripleo-heat-templates/roles -o ~/templates/aci_roles_data.yaml \
+    Controller ComputeInstanceHA
 
 # Tagging Nodes into Profiles
 openstack baremetal node set --property capabilities='profile:control,boot_option:local' --property capabilities='node:controller-0' btpn-controller-0
@@ -193,3 +212,7 @@ $ ./tools/process-templates.py -o ~/openstack-tripleo-heat-templates-rendered
 
 # Generate the fencing.yaml environment file
 (undercloud) $ openstack overcloud generate fencing --output ~/templates/62-fencing.yaml instackenv.json
+
+
+
+
